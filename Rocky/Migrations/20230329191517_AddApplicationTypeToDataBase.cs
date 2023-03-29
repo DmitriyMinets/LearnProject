@@ -5,13 +5,13 @@
 namespace Rocky.Migrations
 {
     /// <inheritdoc />
-    public partial class AddApplicationToDatabase : Migration
+    public partial class AddApplicationTypeToDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Apllication",
+                name: "ApplicationType",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -20,7 +20,7 @@ namespace Rocky.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Apllication", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationType", x => x.Id);
                 });
         }
 
@@ -28,7 +28,7 @@ namespace Rocky.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Apllication");
+                name: "ApplicationType");
         }
     }
 }

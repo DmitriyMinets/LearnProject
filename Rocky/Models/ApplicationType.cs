@@ -2,7 +2,7 @@
 
 namespace Rocky.Models
 {
-    public class Application
+    public class ApplicationType
     {
         [Key]
         public int Id { get; set; }

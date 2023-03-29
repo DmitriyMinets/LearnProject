@@ -10,6 +10,6 @@ namespace Rocky.Data
 
         }
         public DbSet<Category> Category { get; set; }
-        public DbSet<Application> Application { get; set; }
+        public DbSet<ApplicationType> ApplicationType { get; set; }
     }
 }

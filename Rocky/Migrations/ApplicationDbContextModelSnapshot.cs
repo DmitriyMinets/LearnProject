@@ -21,7 +21,7 @@ namespace Rocky.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Rocky.Models.Application", b =>
+            modelBuilder.Entity("Rocky.Models.ApplicationType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,7 +34,7 @@ namespace Rocky.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Apllication");
+                    b.ToTable("ApplicationType");
                 });
 
             modelBuilder.Entity("Rocky.Models.Category", b =>

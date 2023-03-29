@@ -1,12 +1,12 @@
-﻿@model IEnumerable<Rocky.Models.Application>
+﻿@model IEnumerable<Rocky.Models.ApplicationType>
 
 <div class="container p-3">
     <div class="row-4">
         <div class="col-6">
-            <h2 class="text-primary">Application List</h2>
+            <h2 class="text-primary">Application Type List</h2>
         </div>
         <div class="col pt-1 text-end">
-@*            <a asp-controller="Application" asp-action="Create" class="btn btn-primary">Create New Application</a>*@
+            <a asp-controller="ApplicationType" asp-action="Create" class="btn btn-primary">Create New Application</a>
         </div>
     </div>
 
@@ -18,7 +18,7 @@
             <thead>
                 <tr>
                     <th>
-                        Application Name
+                        Application Type Name
                     </th>
                 </tr>
             </thead>
