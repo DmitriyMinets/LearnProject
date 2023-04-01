@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Rocky.Data;
 using Rocky.Models;
 
@@ -29,9 +30,13 @@ namespace Rocky.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(ApplicationType obj)
         {
-            _db.ApplicationType.Add(obj);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            if(ModelState.IsValid) 
+            {
+                _db.ApplicationType.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(obj);
         }
     }
 }

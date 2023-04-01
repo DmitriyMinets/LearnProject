@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Rocky/wwwroot/fontawesons/css/all.css
+/Rocky/wwwroot/fontawesons/css/regular.min.css
+*.css
+*.less
+*.yml
+*.svg
+*.svg
+/Rocky/wwwroot/fontawesons/sprites/regular.svg
+*.svg
+/Rocky/wwwroot/fontawesons/sprites/solid.svg
