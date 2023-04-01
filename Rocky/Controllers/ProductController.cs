@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Rocky.Data;
 using Rocky.Models;
 using Rocky.Models.ViewModels;
@@ -9,14 +10,16 @@ namespace Rocky.Controllers
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public ProductController(ApplicationDbContext db)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
             IEnumerable<Product> objList = _db.Product;
-            foreach(var obj in objList)
+            foreach (var obj in objList)
             {
                 obj.Category = _db.Category.FirstOrDefault(x => x.Id == obj.CategoryId);
             }
@@ -34,7 +37,7 @@ namespace Rocky.Controllers
             //ViewBag.CategoryDropDown = CategoryDropDown;
             //Product product = new();
 
-            ProductVM ProductVM = new ProductVM
+            ProductVM ProductVM = new()
             {
                 Product = new Product(),
                 CategorySelectList = _db.Category.Select(x => new SelectListItem
@@ -44,7 +47,7 @@ namespace Rocky.Controllers
                 })
             };
 
-            if(id == null) 
+            if (id == null)
             {
                 //this is for create
                 return View(ProductVM);
@@ -52,7 +55,7 @@ namespace Rocky.Controllers
             else
             {
                 ProductVM.Product = _db.Product.Find(id);
-                if(ProductVM.Product == null) 
+                if (ProductVM.Product == null)
                 {
                     return NotFound();
                 }
@@ -63,15 +66,66 @@ namespace Rocky.Controllers
         //POST-UPSERT
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Category obj)
+        public IActionResult Upsert(ProductVM productVM)
         {
-            if (ModelState.IsValid)
+            //Разобратсья с валидацие на стороне сервера
+            var files = HttpContext.Request.Form.Files;
+            string webRootPath = _webHostEnvironment.WebRootPath;
+
+            if (productVM.Product.Id == 0)
             {
-                _db.Category.Add(obj);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+                //create
+                string upload = webRootPath + WebConstant.ImagePath;
+                string fileName = Guid.NewGuid().ToString();
+                string extension = Path.GetExtension(files[0].FileName);
+
+                using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension),
+                    FileMode.Create))
+                {
+                    files[0].CopyTo(fileStream);
+                }
+
+                productVM.Product.Image = fileName + extension;
+                _db.Product.Add(productVM.Product);
             }
-            return View(obj);
+            else
+            {
+                //update
+                var objFromDb = _db.Product.AsNoTracking().FirstOrDefault(u => u.Id == productVM.Product.Id);
+                if (objFromDb == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    if (files.Count > 0)
+                    {
+                        string upload = webRootPath + WebConstant.ImagePath;
+                        string fileName = Guid.NewGuid().ToString();
+                        string extension = Path.GetExtension(files[0].FileName);
+
+                        var oldFile = Path.Combine(upload, objFromDb.Image);
+
+                        if (System.IO.File.Exists(oldFile))
+                        {
+                            System.IO.File.Delete(oldFile);
+                        }
+
+                        using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                        {
+                            files[0].CopyTo(fileStream);
+                        }
+                        productVM.Product.Image = fileName + extension;
+                    }
+                    else
+                    {
+                        productVM.Product.Image = objFromDb.Image;
+                    }
+                    _db.Product.Update(productVM.Product);
+                }
+            }
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
 

@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\image\product\" />
     <Folder Include="wwwroot\sweetalert2\" />
   </ItemGroup>
-
 </Project>

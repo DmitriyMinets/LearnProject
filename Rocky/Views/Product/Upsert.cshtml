@@ -1,4 +1,4 @@
-﻿@model Rocky.Models.ViewModels.ProductVM
+﻿@model Rocky.Models.ViewModels.ProductVM 
 
 @{
     var title = "Create Product";
@@ -83,6 +83,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-4">
+                <img src ="@WebConstant.ImagePath@Model.Product.Image" width="100%" style="border-radius:5px; border:1px solid #bbb"/>
             </div>
         </div>
     </div>

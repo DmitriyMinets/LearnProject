@@ -14,8 +14,8 @@ namespace Rocky.Models
         public double Price { get; set; }
         public string? Image { get; set; }
         [Display(Name = "Category Type")]
-        public int ? CategoryId { get; set; }
-        [ForeignKey(nameof(CategoryId))]
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
 
 
