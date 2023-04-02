@@ -81,7 +81,7 @@ namespace Rocky.Controllers
             return View(obj);
         }
 
-        //POST-EDIT
+        //POST-DELETE
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)

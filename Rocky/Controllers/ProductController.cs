@@ -16,6 +16,8 @@ namespace Rocky.Controllers
             _db = db;
             _webHostEnvironment = webHostEnvironment;
         }
+
+        //GET-INDEX
         public IActionResult Index()
         {
             IEnumerable<Product> objList = _db.Product;
@@ -29,14 +31,6 @@ namespace Rocky.Controllers
         //GET-UPSERT
         public IActionResult Upsert(int? id)
         {
-            //IEnumerable<SelectListItem> CategoryDropDown = _db.Category.Select(x => new SelectListItem
-            //{
-            //    Text = x.Name,
-            //    Value = x.Id.ToString()
-            //});
-            //ViewBag.CategoryDropDown = CategoryDropDown;
-            //Product product = new();
-
             ProductVM ProductVM = new()
             {
                 Product = new Product(),
@@ -136,25 +130,34 @@ namespace Rocky.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Category.Find(id);
-            if (obj == null)
+            Product product = _db.Product.Include(x => x.Category).FirstOrDefault(u => u.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(obj);
+            return View(product);
         }
 
-        //POST-EDIT
-        [HttpPost]
+        //POST-DELETE
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var obj = _db.Category.Find(id);
+            var obj = _db.Product.Find(id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.Category.Remove(obj);
+
+            string upload = _webHostEnvironment.WebRootPath + WebConstant.ImagePath;
+            var oldFile = Path.Combine(upload, obj.Image);
+
+            if (System.IO.File.Exists(oldFile))
+            {
+                System.IO.File.Delete(oldFile);
+            }
+
+            _db.Product.Remove(obj);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
