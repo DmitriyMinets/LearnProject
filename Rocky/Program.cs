@@ -15,6 +15,14 @@ namespace Rocky
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;   //Политика согласия
+            });
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
@@ -33,7 +41,7 @@ namespace Rocky
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

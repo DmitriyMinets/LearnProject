@@ -1,15 +1,15 @@
 ﻿@model Rocky.Models.Product
 
-<div class="col-lg-4 col-md-6 pb-4">
+<div class="col-lg-4 col-md-6 pb-4 filter @Model.Category.Name.Replace(' ', '_')">
     <!--Card-->
     <div class="card bg-white rounded shadow-sm" style="border:1px solid #222">
         <div class="card-body px-3 pt-3 pb-2 row">
-            <div class="col-7 pb-1">
+            <div class="col-7 pb-1"> 
                 <label class="float-start">@Model.Name</label>
             </div>
             <div class="col-5">
                 <label class="float-end pb-1">
-                    <span class="text-info h5">@Model.Price</span> /sqft
+                    <span class="text-info h5">@((Model.Price).ToString("c0"))</span> /sqft
                 </label>
             </div>
         </div>
