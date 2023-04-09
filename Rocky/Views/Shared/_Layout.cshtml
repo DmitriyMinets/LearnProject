@@ -27,6 +27,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item active">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -39,6 +40,7 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index">Category</a> </li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="ApplicationType" asp-action="Index">Application Type</a></li>
                                 <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create Admin User</a></li>
                             </ul>
                         </li>
                         <li>
@@ -58,7 +60,9 @@
                                 </a>
                             }
                         </li>
+
                     </ul>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
