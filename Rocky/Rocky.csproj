@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ElasticEmail" Version="4.0.22" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
@@ -20,5 +21,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\image\product\" />
     <Folder Include="wwwroot\sweetalert2\" />
+    <Folder Include="wwwroot\template\" />
   </ItemGroup>
 </Project>
