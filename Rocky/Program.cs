@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Rocky.Data;
 using Rocky.Utility;
+using Rocky_DataAccess.Repository;
+using Rocky_DataAccess.Repository.IRepository;
 
 namespace Rocky
 {
@@ -30,6 +32,12 @@ namespace Rocky
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;   
             });
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IApplicationTypeRepository, ApplicationTypeRepository>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IInquiryHeaderRepository, InquiryHeaderRepository>();
+            builder.Services.AddScoped<IInquiryDetailsRepository, InquiryDetailsRepository>();
+            builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
             builder.Services.AddControllersWithViews();
 

@@ -1,4 +1,4 @@
-﻿@model Rocky.Models.ViewModels.ProductVM 
+﻿@model Rocky_Models.ViewModels.ProductVM 
 
 @{
     var title = "Create Product";
@@ -65,7 +65,7 @@
                         <label asp-for="Product.CategoryId"></label>
                     </div>
                     <div class="col-8">
-                        <select asp-for="Product.CategoryId" asp-items="Model.CategorySelectList" class="form-control">
+                        <select asp-for="Product.CategoryId" asp-items="Model.CategorySelectList" class="form-select">
                             <option disabled selected>--Select Category--</option>
                         </select>
                         <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
@@ -76,7 +76,7 @@
                         <label asp-for="Product.ApplicationTypeId"></label>
                     </div>
                     <div class="col-8">
-                        <select asp-for="Product.ApplicationTypeId" asp-items="Model.ApplicationTypeSelectList" class="form-control">
+                        <select asp-for="Product.ApplicationTypeId" asp-items="Model.ApplicationTypeSelectList" class="form-select">
                             <option disabled selected>--Select Application Type--</option>
                         </select>
                         <span asp-validation-for="Product.ApplicationTypeId" class="text-danger"></span>

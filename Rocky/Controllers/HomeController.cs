@@ -1,36 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rocky.Data;
-using Rocky.Models;
-using Rocky.Models.ViewModels;
+using Rocky_Models;
+using Rocky_Models.ViewModels;
 using System.Diagnostics;
 using Rocky.Utility;
+using Rocky_DataAccess.Repository.IRepository;
 
 namespace Rocky.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _db;
+        private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
             _logger = logger;
-            _db = db;
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public IActionResult Index()
         {
             HomeVM homeVM = new()
             {
-                Products = _db.Product.Include(x => x.Category).Include(x => x.ApplicationType),
-                Categories = _db.Category
+                Products = _productRepository.GetAll(includeProperties: "Category,ApplicationType"),
+                Categories = _categoryRepository.GetAll()
             };
             return View(homeVM);
         }
 
         //GET-DETAILS
-        public IActionResult Details(int id) 
+        public IActionResult Details(int id)
         {
             List<ShoppingCart> shoppingCartList = new();
             if (HttpContext.Session.Get<List<ShoppingCart>>(WebConstant.SessionCart) != null
@@ -41,11 +44,11 @@ namespace Rocky.Controllers
 
             DetailsVM detailVM = new()
             {
-                Product = _db.Product.Include(y => y.Category).Include(y => y.ApplicationType).Where(x => x.Id == id).FirstOrDefault(),
+                Product = _productRepository.FirstOrDefault(x => x.Id == id, includeProperties: "Category,ApplicationType"),
                 ExistsInCard = false
             };
 
-            foreach(var item in shoppingCartList)
+            foreach (var item in shoppingCartList)
             {
                 if (item.ProductId == id)
                 {
@@ -59,7 +62,7 @@ namespace Rocky.Controllers
         public IActionResult DetailsPost(int id)
         {
             List<ShoppingCart> shoppingCartList = new();
-            if(HttpContext.Session.Get<List<ShoppingCart>>(WebConstant.SessionCart) != null 
+            if (HttpContext.Session.Get<List<ShoppingCart>>(WebConstant.SessionCart) != null
                 && HttpContext.Session.Get<List<ShoppingCart>>(WebConstant.SessionCart).Count > 0)
             {
                 shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstant.SessionCart);
@@ -80,7 +83,7 @@ namespace Rocky.Controllers
 
             var itemToRemove = shoppingCartList.SingleOrDefault(x => x.ProductId == id);
 
-            if(itemToRemove != null) 
+            if (itemToRemove != null)
             {
                 shoppingCartList.Remove(itemToRemove);
             }
